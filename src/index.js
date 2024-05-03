@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import axios from 'axios';
 import './index.css';
+
+import TodoItem from './components/TodoItem';
 /*
 Server-State (Backend)
 TODO : {userId?:number,id:number,title:string,complete:boolean}
@@ -19,7 +21,7 @@ function App() {
     try {
       const response = await axios.get('http://jsonplaceholder.typicode.com/todos');
       // Backend State => Frontend State
-      setTodos(response.data.slice(0, 11));
+      setTodos(response.data.slice(0, 10));
     } catch (error) {
       console.log(error);
     }
@@ -70,6 +72,19 @@ function App() {
     }
   };
 
+  // API-4 : Update Todo
+  const updateTodo = async (todoId, updateTodo) => {
+    try {
+      const response = await axios.patch(
+        `https://jsonplaceholder.typicode.com/todos/${todoId}`,
+        updateTodo
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // FN RETURN : UI
   return (
     <div className='app'>
@@ -83,12 +98,7 @@ function App() {
         </header>
         <ul className='todo__list'>
           {todos.map((todo) => (
-            <li key={todo.id} className='todo__item'>
-              <p className={todo.complete ? 'done' : ''}>{todo.title}</p>
-              <button>edit</button>
-              {/* <button onClick={deleteTodo}>x</button> */}
-              <button onClick={(event) => deleteTodo(todo.id)}>x</button>
-            </li>
+            <TodoItem key={todo.id} todo={todo} deleteTodo={deleteTodo} updateTodo={updateTodo} />
           ))}
         </ul>
       </div>

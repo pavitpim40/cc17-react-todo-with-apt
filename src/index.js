@@ -75,11 +75,31 @@ function App() {
   // API-4 : Update Todo
   const updateTodo = async (todoId, updateTodo) => {
     try {
+      // React => Server
       const response = await axios.patch(
         `https://jsonplaceholder.typicode.com/todos/${todoId}`,
         updateTodo
       );
-      console.log(response.data);
+
+      // ## Server => React
+
+      // Imperative Way
+      // const updatedTodoList = [...todos];
+      // const foundedIndex = updatedTodoList.findIndex((todo) => todo.id === todoId);
+      // if (foundedIndex !== -1) {
+      //   updatedTodoList[foundedIndex] = response.data;
+      //   setTodos(updatedTodoList);
+      // }
+
+      // Functional Programming
+      setTodos((prev) =>
+        prev.reduce((acc, todo) => {
+          // if (todo.id !== todoId) acc.push(todo);
+          // else acc.push(response.data);
+          acc.push(todo.id === todoId ? response.data : todo);
+          return acc;
+        }, [])
+      );
     } catch (error) {
       console.log(error);
     }

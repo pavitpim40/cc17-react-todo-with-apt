@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import axios from 'axios';
 import './index.css';
@@ -13,6 +13,11 @@ TODO_LISTS : Array<TODO>
 function App() {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState('');
+
+  // useEffect( callBackEffect , Array )
+  useEffect(() => {
+    getAllTodo();
+  }, []);
 
   // FN BODY : Logic
 
@@ -110,9 +115,7 @@ function App() {
     <div className='app'>
       <div className='todo'>
         <header className='todo__add'>
-          <h1>
-            TodoList <button onClick={getAllTodo}>FETCH</button>
-          </h1>
+          <h1>TodoList</h1>
           <input value={newTodo} onChange={handleChangeTodo} />
           <button onClick={createTodo}>add</button>
         </header>
